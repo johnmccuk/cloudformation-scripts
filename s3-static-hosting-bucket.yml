@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Bucket for static website
+Parameters:
+  BucketName:
+    Description: Enter a name for the Bucket
+    Type: String
+Resources:
+  S3Bucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Ref BucketName
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+Outputs:
+  BucketName:
+    Value: !GetAtt
+      - S3Bucket
+      - DomainName
+    Description: S3 Bucket Name
+    Export:
+      Name: S3BucketName
+
+  BucketARN:
+    Value: !GetAtt
+      - S3Bucket
+      - Arn
+    Description: S3 Bucket Arn
+    Export:
+      Name: S3BucketARN
+
+  RegionalDomainName:
+    Value: !GetAtt
+      - S3Bucket
+      - RegionalDomainName
+    Description: S3 Bucket RegionalDomainName
+    Export:
+      Name: S3BucketRegionalDomainName
